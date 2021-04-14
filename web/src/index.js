@@ -17,24 +17,40 @@
  */
 
 // Configure our app
-angular.module('editor', ['editor.login', 'editor.rename', 'editor.drive', 'ngRoute', 'ngMaterial', 'ui.codemirror'])
+angular
+  .module('editor', [
+    'editor.login',
+    'editor.rename',
+    'editor.drive',
+    'ngRoute',
+    'ngMaterial',
+    'ui.codemirror',
+  ])
   .constant('apiKey', null)
-  .constant('clientId', '709207149709-fadikftqudacphtr4pq5mu80s6tqklrb.apps.googleusercontent.com')
-  .constant('applicationId', '709207149709')
-  .constant('scope', ['email', 'profile', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.install'])
+  .constant(
+    'clientId',
+    '791700121203-8r9v5gfp0cf015693kec4vc7a8ogr33o.apps.googleusercontent.com',
+  )
+  .constant('applicationId', '310511')
+  .constant('scope', [
+    'email',
+    'profile',
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/drive.install',
+  ])
   .constant('loadApis', {
-    'drive' : 'v2'
+    drive: 'v2',
   })
-  .config(function ($routeProvider) {
+  .config(function($routeProvider) {
     $routeProvider
       .when('/edit/:fileId?', {
         templateUrl: 'main/main.html',
         controller: 'MainCtrl',
-        controllerAs: 'ctrl'
+        controllerAs: 'ctrl',
       })
       .otherwise({
         redirectTo: function() {
           return '/edit/';
-        }
+        },
       });
   });
