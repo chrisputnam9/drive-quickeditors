@@ -35,30 +35,24 @@ var module = angular.module('editor.gapi', []);
  * Adapter for exposing gapi as an angular service. This registers a promise that will
  * resolve to gapi after all the APIs have been loaded.
  */
-module.factory('googleApi', [
-  '$rootScope',
-  '$window',
-  '$q',
-  'apiKey',
-  'loadApis',
-  function($rootScope, $window, $q, apiKey, loadApis) {
-    var googleApi = $q.defer();
+module.factory('googleApi', ['$rootScope', '$window', '$q', 'apiKey', 'loadApis', function($rootScope, $window, $q, apiKey, loadApis) {
+  var googleApi = $q.defer();
 
-    $window.init_gapi = function() {
-      $rootScope.$apply(function() {
-        var apis = [];
-        if (apiKey) {
-          $window.gapi.client.setApiKey(apiKey);
-        }
-        angular.forEach(loadApis, function(value, key) {
-          apis.push($q.when(gapi.load(key, value)));
-        });
-        $q.all(apis).then(function() {
-          googleApi.resolve($window.gapi);
-        });
+  $window.init_gapi = function() {
+    $rootScope.$apply(function() {
+      var apis = [];
+      if (apiKey) {
+        $window.gapi.client.setApiKey(apiKey);
+      }
+      angular.forEach(loadApis, function(value, key) {
+        apis.push($q.when(gapi.client.load(key, value)));
       });
-    };
+      $q.all(apis).then(function() {
+        googleApi.resolve($window.gapi);
+      });
+    });
+  };
 
-    return googleApi.promise;
-  }
-]);
+  return googleApi.promise;
+}]);
+

@@ -26,7 +26,8 @@ module.service('drive', [
   function($q, $cacheFactory, googleApi, applicationId) {
     // Only fetch fields that we care about
     var DEFAULT_FIELDS =
-      'id,name,mimeType,userPermission,editable,copyable,shared,fileSize';
+      'id,title,mimeType,userPermission,editable,copyable,shared,fileSize';
+    var DEFAULT_FIELDS_V3 = 'id,name,mimeType,shared,size';
 
     var cache = $cacheFactory('files');
 
@@ -42,6 +43,7 @@ module.service('drive', [
         metadata: metadata,
         content: content
       };
+      console.log(metadata);
       cache.put(metadata.id, file);
       return file;
     };
@@ -96,7 +98,7 @@ module.service('drive', [
             // filter down metadata
             var original_metadata = metadata;
             metadata = {
-              name: original_metadata.name,
+              name: original_metadata.title,
               mimeType: original_metadata.mimeType
             };
 
@@ -118,7 +120,7 @@ module.service('drive', [
             params: {
               uploadType: 'multipart',
               supportsTeamDrives: true,
-              fields: DEFAULT_FIELDS
+              fields: DEFAULT_FIELDS_V3
             },
             headers: { 'Content-Type': multipart.type },
             body: multipart.body
